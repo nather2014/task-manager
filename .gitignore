@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# compiled classes
+*.class
+
+# Maven / Gradle build output
+target/
+build/
+
+# logs
+*.log
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS junk
+.DS_Store

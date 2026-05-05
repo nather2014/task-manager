@@ -1,27 +1,41 @@
-package com.example.taskmanager;
+package com.example.taskmanager.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.taskmanager.dto.TaskRequestDto;
+import com.example.taskmanager.dto.TaskResponseDto;
+import com.example.taskmanager.service.TaskService;
+
 
 @RestController
+@RequestMapping("/api/v1/tasks")
 class TaskController {
 
-    private TaskService service;
+    private final TaskService service;
 
-    public TaskController(TaskService service) {
+    TaskController(TaskService service) {
         this.service = service;
     }
 
-    @GetMapping("/tasks")
+    // create task
+    @PostMapping()
+    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto requestDto) {
+        TaskResponseDto responseDto = service.createTask(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    //get all tasks
+    @GetMapping
     public void getAllTasks() {
         service.getAllTasks();
     }
 
-    @PostMapping()
-    public createTask(Task taskDto) {
-        return service.createTask(taskDto);
+    // get task by id
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getTaskById(id));
     }
-    
+
 }
