@@ -1,6 +1,11 @@
 package com.example.taskmanager.dto;
 
 
-public record TaskResponseDto(Long id, String title, String description, boolean completed) {
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class TaskResponseDto {
 
 }

@@ -1,5 +1,6 @@
 package com.example.taskmanager.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.example.taskmanager.dto.TaskRequestDto;
@@ -8,13 +9,10 @@ import com.example.taskmanager.model.Task;
 import com.example.taskmanager.repository.TaskRepository;
 
 @Service
+@RequiredArgsConstructor
 public class TaskService {
 
   private final TaskRepository repo;
-
-  public TaskService(TaskRepository repo) {
-    this.repo = repo;
-  }
 
   public TaskResponseDto createTask(TaskRequestDto requestDto) {
     Task task = toEntity(requestDto);
