@@ -1,13 +1,14 @@
 package com.example.taskmanager.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Task {
 
   @Id
@@ -17,19 +18,11 @@ public class Task {
   @Column(nullable = false, unique = true)
   private String title;
 
-  @Column(nullable = false, length = 255)
-  private String description;
-
   @Column(nullable = false)
   private Boolean completed;
-
-  @Column(nullable = false)
-  private LocalDateTime createdAt;
-
-  @Column(nullable = false)
-  private LocalDateTime completedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="category_id")
   private Category category;
+
 }

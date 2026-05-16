@@ -1,12 +1,14 @@
 package com.example.taskmanager.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Category {
 
     @Id
@@ -16,6 +18,4 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(length = 255)
-    private String description;
 }
