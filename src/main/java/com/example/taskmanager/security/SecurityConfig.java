@@ -2,7 +2,6 @@ package com.example.taskmanager.security;
 
 import lombok.RequiredArgsConstructor;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -22,30 +21,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-return httpSecurity
-    .csrf(csrf -> csrf.disable())
-    .authorizeHttpRequests(requests -> requests
-        .requestMatchers(
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/v3/api-docs/**",
-            "/v3/api-docs",
-            "/webjars/**"
-        ).permitAll()
-        .requestMatchers("/api/tasks/**").authenticated()
-        .anyRequest().permitAll()
-    )
-    .httpBasic(Customizer.withDefaults())
-    .build();
+        return httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = org.springframework.security.core.userdetails.User
-            .withUsername("admin")
-            .password(passwordEncoder().encode("password"))
-            .roles("USER")
-            .build();
+                .withUsername("admin")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER")
+                .build();
         return new InMemoryUserDetailsManager(user);
     }
 
