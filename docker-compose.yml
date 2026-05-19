@@ -1,16 +1,16 @@
 services:
   task-db:
-    image: postgres:16-alpine
+    image: docker.io/library/postgres:16-alpine
     container_name: task-manager-db
     restart: always
     environment:
-      - POSTGRES_USER=taskmanageruser
-      - POSTGRES_PASSWORD=taskmanagerpassword
-      - POSTGRES_DB=taskmanagerdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=taskdb
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U taskmanageruser -d taskmanagerdb"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
       interval: 5s
       timeout: 5s
       retries: 5
