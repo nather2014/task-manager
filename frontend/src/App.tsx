@@ -1,8 +1,16 @@
 // src/App.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { taskApi } from './api';
 import { Task, Priority, TaskStatus } from './types';
 import { CheckSquare, LayoutDashboard, Plus, Clock, CheckCircle2, AlertCircle, Trash2 } from 'lucide-react';
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            [elemName: string]: any;
+        }
+    }
+}
 
 export default function App() {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -77,7 +85,7 @@ export default function App() {
                     <div className="bg-indigo-600 text-white p-2 rounded-lg">
                         <CheckSquare className="w-6 h-6" />
                     </div>
-                    <span class="text-xl font-bold text-gray-800">TaskEngine</span>
+                    <span className="text-xl font-bold text-gray-800">TaskEngine</span>
                 </div>
                 <nav className="space-y-1 flex-1">
                     <a href="#" className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium">
@@ -102,7 +110,7 @@ export default function App() {
                                     type="text" 
                                     placeholder="Task title or user story..." 
                                     value={title} 
-                                    onChange={e => setTitle(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
                                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500"
                                     required 
                                 />
@@ -110,14 +118,14 @@ export default function App() {
                                     type="text" 
                                     placeholder="Add brief description contexts..." 
                                     value={desc} 
-                                    onChange={e => setDesc(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}
                                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-500 focus:outline-none focus:border-indigo-500"
                                 />
                             </div>
                             <div>
                                 <select 
                                     value={priority} 
-                                    onChange={e => setPriority(e.target.value as Priority)}
+                                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value as Priority)}
                                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-indigo-500"
                                 >
                                     <option value="LOW">Low Priority</option>
