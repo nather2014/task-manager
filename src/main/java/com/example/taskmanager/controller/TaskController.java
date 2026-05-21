@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
-class TaskController {
+public class TaskController {
 
   private final TaskService service;
 
