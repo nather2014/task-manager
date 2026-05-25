@@ -19,28 +19,28 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
-                .httpBasic(Customizer.withDefaults())
-                .build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(requests -> requests.anyRequest().permitAll())
+        .httpBasic(Customizer.withDefaults())
+        .build();
+  }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = org.springframework.security.core.userdetails.User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
+  @Bean
+  public UserDetailsService userDetailsService() {
+    UserDetails user = org.springframework.security.core.userdetails.User
+        .withUsername("admin")
+        .password(passwordEncoder().encode("password"))
+        .roles("USER")
+        .build();
+    return new InMemoryUserDetailsManager(user);
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
 
-    }
+  }
 }

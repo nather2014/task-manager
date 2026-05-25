@@ -24,7 +24,7 @@ public class Task {
   private boolean completed;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="category_id")
+  @JoinColumn(name = "category_id")
   private Category category;
 
 }

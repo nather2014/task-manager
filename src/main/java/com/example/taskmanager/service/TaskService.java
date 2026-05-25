@@ -26,14 +26,13 @@ public class TaskService {
   }
 
   public List<TaskResponseDto> getAll() {
-   return repository.findAll().stream().map(mapper::toResponse).toList();
+    return repository.findAll().stream().map(mapper::toResponse).toList();
   }
 
   public TaskResponseDto getById(Long id) {
     Task task = repository.findById(id).get();
     return mapper.toResponse(task);
   }
-
 
   public void deleteById(Long id) {
     repository.deleteById(id);
