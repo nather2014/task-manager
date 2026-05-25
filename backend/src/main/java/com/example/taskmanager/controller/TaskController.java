@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
 
   private final TaskService service;
@@ -40,8 +41,8 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TaskResponseDto> updateById(@PathVariable Long id) {
-    TaskResponseDto responseDto = service.updateById(id);
+  public ResponseEntity<TaskResponseDto> updateById(@PathVariable Long id,@RequestBody TaskRequestDto requestDto) {
+    TaskResponseDto responseDto = service.updateById(id,requestDto);
     return ResponseEntity.ok(responseDto);
   }
 }

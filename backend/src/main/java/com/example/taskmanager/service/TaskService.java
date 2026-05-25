@@ -39,8 +39,9 @@ public class TaskService {
     repository.deleteById(id);
   }
 
-  public TaskResponseDto updateById(Long id) {
+  public TaskResponseDto updateById(Long id, TaskRequestDto requestDto) {
     Task task = repository.findById(id).get();
+    task.setTitle(requestDto.title());
     task.setCompleted(!task.isCompleted());
     Task updated = repository.save(task);
     return mapper.toResponse(updated);
