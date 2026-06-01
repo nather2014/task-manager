@@ -1,7 +1,5 @@
 package com.example.taskmanager.service;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import com.example.taskmanager.dto.TaskRequestDto;
@@ -13,8 +11,12 @@ import com.example.taskmanager.repository.TaskRepository;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TaskService {
+
+  TaskService(TaskRepository repository, TaskMapper mapper) {
+    this.repository = repository;
+    this.mapper = mapper;
+  }
 
   private final TaskRepository repository;
   private final TaskMapper mapper;

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Task Manager</h1>
+
+    <!-- Add Task -->
+    <div class="box">
+      <h3>Add Task</h3>
+
+      <input id="newTitle" placeholder="Title" />
+      <button onclick="createTask()">Add Task</button>
+    </div>
+
+    <!-- All Tasks -->
+    <div class="box">
+      <h3>All Tasks</h3>
+
+      <button onclick="fetchTasks()">Refresh</button>
+
+      <ul id="taskList"></ul>
+    </div>
+
+    <!-- Task Details -->
+    <div id="selectedBox" class="box" style="display:none;">
+      <h3>Task Details</h3>
+      <p id="selectedTitle"></p>
+    </div>
+
+    <!-- Update Task -->
+    <div id="editBox" class="box" style="display:none;">
+      <h3>Update Task</h3>
+
+      <input id="editTitle" />
+
+      <button onclick="updateTask()">Save Update</button>
+      <button onclick="cancelEdit()">Cancel</button>
+    </div>
+
+  </div>
+
+<script>
+const apiBase = "http://localhost:8080/api/v1";
+
+let tasks = [];
+let selectedTask = null;
+
+let editId = null;
+
+// -------- CREATE --------
+async function createTask() {
+  const title = document.getElementById("newTitle").value;
+
+  await fetch(`${apiBase}/tasks`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title })
+  });
+
+  document.getElementById("newTitle").value = "";
+  fetchTasks();
+}
+
+// -------- READ ALL --------
+async function fetchTasks() {
+  const res = await fetch(`${apiBase}/tasks`);
+  tasks = await res.json();
+
+  renderTasks();
+}
+
+// -------- RENDER --------
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  tasks.forEach(task => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${task.title}
+      <button onclick="getTaskById(${task.id})">Get</button>
+      <button onclick="startEdit(${task.id})">Update</button>
+      <button onclick="deleteTask(${task.id})">Delete</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+// -------- GET BY ID --------
+async function getTaskById(id) {
+  const res = await fetch(`${apiBase}/tasks/${id}`);
+  selectedTask = await res.json();
+
+  document.getElementById("selectedBox").style.display = "block";
+  document.getElementById("selectedTitle").innerText = selectedTask.title;
+}
+
+// -------- EDIT --------
+function startEdit(id) {
+  editId = id;
+
+  const task = tasks.find(t => t.id === id);
+
+  document.getElementById("editTitle").value = task.title;
+  document.getElementById("editBox").style.display = "block";
+}
+
+async function updateTask() {
+  const title = document.getElementById("editTitle").value;
+
+  await fetch(`${apiBase}/tasks/${editId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title })
+  });
+
+  cancelEdit();
+  fetchTasks();
+}
+
+function cancelEdit() {
+  editId = null;
+  document.getElementById("editBox").style.display = "none";
+}
+
+// -------- DELETE --------
+async function deleteTask(id) {
+  await fetch(`${apiBase}/tasks/${id}`, {
+    method: "DELETE"
+  });
+
+  fetchTasks();
+}
+
+// initial load
+fetchTasks();
+</script>
+
+</body>
+</html>

@@ -3,24 +3,30 @@ package com.example.taskmanager.controller;
 import com.example.taskmanager.dto.TaskRequestDto;
 import com.example.taskmanager.dto.TaskResponseDto;
 import com.example.taskmanager.service.TaskService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/tasks")
-@RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
+
+  TaskController(TaskService service) {
+    this.service = service;
+  }
 
   private final TaskService service;
 
   @PostMapping
   public ResponseEntity<TaskResponseDto> createTask(
-      @RequestBody TaskRequestDto requestDto) {
+      @Valid @RequestBody TaskRequestDto requestDto) {
     TaskResponseDto responseDto = service.create(requestDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
   }
@@ -41,7 +47,8 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TaskResponseDto> updateById(@PathVariable Long id, @RequestBody TaskRequestDto requestDto) {
+  public ResponseEntity<TaskResponseDto> updateById(@PathVariable @Min(1) Long id,
+      @RequestBody TaskRequestDto requestDto) {
     TaskResponseDto responseDto = service.updateById(id, requestDto);
     return ResponseEntity.ok(responseDto);
   }

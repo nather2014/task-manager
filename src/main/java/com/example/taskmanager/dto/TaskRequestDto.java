@@ -1,4 +1,6 @@
 package com.example.taskmanager.dto;
 
-public record TaskRequestDto(String title, boolean completed) {
+import jakarta.validation.constraints.NotBlank;
+
+public record TaskRequestDto(@NotBlank String title, boolean completed) {
 }
